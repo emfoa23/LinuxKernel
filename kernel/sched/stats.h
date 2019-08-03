@@ -209,6 +209,10 @@ static inline void sched_info_queued(struct rq *rq, struct task_struct *t)
 static inline void sched_info_depart(struct rq *rq, struct task_struct *t)
 {
 	unsigned long long delta = rq_clock(rq) - t->sched_info.last_arrival;
+	
+	if ((t->nvcsw + t->nivcsw)%1000 == 0){
+		printk("[Pid: %d], CPUburst: %llu", t->pid, delta);
+	}
 
 	rq_sched_info_depart(rq, delta);
 
